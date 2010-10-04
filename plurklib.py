@@ -24,7 +24,6 @@
 import urllib
 import http.cookiejar
 import json
-import upload
 
 class PlurkError(Exception): pass
 
@@ -1039,13 +1038,3 @@ class PlurkAPI:
             shorten = alphabet[i] + shorten
         link = 'http://www.plurk.com/p/' + shorten
         return link
-
-'''
-    def uploadPicture(image):
-        return post_multipart("http://www.plurk.com/API/Timeline/uploadPicture", '', {'api_key': self._api_key}, {'image': image})
-        """
-        parameters = {'image': multipart}
-        request = '/API/Timeline/uploadPicture'
-        response = self._call_api(request, parameters)
-        return response
-        """'''
