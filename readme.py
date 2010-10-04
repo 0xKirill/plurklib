@@ -2,7 +2,7 @@
 This is a example of almost all uses Plurk API via plurklib 
 Most Pythonic implementation of Plurk API for Python 3.x by Kurt Karakurt.
 
-For more information see official plurklib page: 
+For more information see official plurklib page:    http://code.google.com/p/plurklib/
 or official API website:                            http://www.plurk.com/API
 """
 
@@ -54,7 +54,7 @@ p.plurkIDToLink(481401303)
 
 #Get plurk and the owner info
 p.getPlurk(475522950)
-#or with permalinkToPlurkID
+#or with linkToPlurkID
 p.getPlurk(p.linkToPlurkID('http://www.plurk.com/p/7ym3mf'))
 
 #Get filtered plurks

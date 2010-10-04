@@ -49,7 +49,7 @@ class PlurkAPI:
             Optional parameters:
                 https: If it's set to True, then HTTPS and SSL are used for the API call.
             Successful return:
-                The parsed JSON object is returned for further processing.
+                The parsed dict object is returned for further processing.
         """
         parameters['api_key'] = self._api_key
         post = urllib.parse.urlencode(parameters)
@@ -548,7 +548,7 @@ class PlurkAPI:
         """ Returns data that's private for the currently logged in user. 
             This can be used to construct a profile and render a timeline of the latest plurks.
             Successful return:
-                Returns a JSON object with a lot of information that can be used to construct a user's own profile and timeline
+                Returns a dict object with a lot of information that can be used to construct a user's own profile and timeline
                 For details, see: http://www.plurk.com/API#/API/Users/getOwnProfile
         """
         parameters = {}
@@ -687,7 +687,7 @@ class PlurkAPI:
         return response
 
     def getCompletion(self):
-        """ Returns a JSON object of the logged in users friends (nick name and full name).
+        """ Returns a dict object of the logged in users friends (nick name and full name).
             This information can be used to construct auto-completion for private plurking.
             Notice that a friend list can be big, depending on how many friends a user has,
             so this list should be lazy-loaded in your application.
