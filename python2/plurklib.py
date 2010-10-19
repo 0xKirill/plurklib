@@ -1,4 +1,3 @@
-﻿# -*- coding: utf-8 -*-
 """
     Copyright (c) 2010 Kurt Karakurt <kurt.karakurt@gmail.com>
 
@@ -54,16 +53,16 @@ class PlurkAPI:
         parameters['api_key'] = self._api_key
         post = urllib.urlencode(parameters)
         if https:
-            request = urllib2.Request(url = 'https://www.plurk.com/' + apirequest, data = post)
+            request = urllib2.Request(url = 'https://www.plurk.com' + apirequest, data = post)
         else:
-            request = urllib2.Request(url = 'http://www.plurk.com/' + apirequest, data = post)
+            request = urllib2.Request(url = 'http://www.plurk.com' + apirequest, data = post)
         try:
             response = urllib2.urlopen(request)
         except urllib.error.HTTPError as message:
             if message.code == 400:
                 response = json.loads(message.fp.read().decode("utf-8"))
             return response
-        if apirequest == 'API/Users/login':
+        if apirequest == '/API/Users/login':
             cookies = cookielib.CookieJar()
             opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookies))
             urllib2.install_opener(opener)
@@ -127,7 +126,7 @@ class PlurkAPI:
                       'password': password} 
         if no_data != None:
             parameters['no_data'] = no_data
-        request = 'API/Users/login'
+        request = '/API/Users/login'
         response = self._call_api(request, parameters, True)
         return response
 
@@ -137,7 +136,7 @@ class PlurkAPI:
                 {'success_text': 'ok'} if the user is logged out.
         """
         parameters = {}
-        request = 'API/Users/logout'
+        request = '/API/Users/logout'
         response = self._call_api(request, parameters)
         return response
 
@@ -198,7 +197,7 @@ class PlurkAPI:
                 http://www.plurk.com/API#/API/Users/getKarmaStats
         """
         parameters = {}
-        request = 'API/Users/getKarmaStats'
+        request = '/API/Users/getKarmaStats'
         response = self._call_api(request, parameters)
         return response
 
@@ -361,7 +360,7 @@ class PlurkAPI:
             parameters['no_comments'] = no_comments
         if lang != None:
             parameters['lang'] = lang
-        request = 'API/Timeline/plurkAdd'
+        request = '/API/Timeline/plurkAdd'
         response = self._call_api(request, parameters)
         return response
 
@@ -805,7 +804,7 @@ class PlurkAPI:
                 {'error_text': 'Requires login'}
         """
         parameters = {'user_id': user_id}
-        request = 'API/Alerts/removeNotification'
+        request = '/API/Alerts/removeNotification'
         response = self._call_api(request, parameters)
         return response
 
@@ -1027,7 +1026,7 @@ class PlurkAPI:
         """ Convert plurk_id to link. 
             Required parameters:
                 plurk_id: The unique id of the plurk. Should be passed as a number, and not base 36 encoded.
-            Successful rehttp://www.plurk.com/p/7ym3mfturn:
+            Successful return:
                 The link to the plurk, e.g. "http://www.plurk.com/p/7ym3mf"
         """
         alphabet = "0123456789abcdefghijklmnopqrstuvwxyz"
@@ -1039,13 +1038,3 @@ class PlurkAPI:
             shorten = alphabet[i] + shorten
         link = 'http://www.plurk.com/p/' + shorten
         return link
-
-'''
-    def uploadPicture(image):
-        return post_multipart("http://www.plurk.com/API/Timeline/uploadPicture", '', {'api_key': self._api_key}, {'image': image})
-        """
-        parameters = {'image': multipart}
-        request = '/API/Timeline/uploadPicture'
-        response = self._call_api(request, parameters)
-        return response
-        """'''
