@@ -24,8 +24,6 @@ import urllib
 import http.cookiejar
 import json
 
-class PlurkError(Exception): pass
-
 class PlurkAPI:
 
     def __init__(self, key):
