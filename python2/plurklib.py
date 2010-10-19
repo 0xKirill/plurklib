@@ -56,7 +56,7 @@ class PlurkAPI:
             request = urllib2.Request(url = 'http://www.plurk.com' + apirequest, data = post)
         try:
             response = urllib2.urlopen(request)
-        except urllib.error.HTTPError as message:
+        except urllib2.HTTPError as message:
             if message.code == 400:
                 response = json.loads(message.fp.read().decode("utf-8"))
             return response
