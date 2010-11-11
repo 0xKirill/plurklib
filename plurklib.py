@@ -19,10 +19,24 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 """
-
+import sys
 import urllib
-import http.cookiejar
 import json
+if sys.version[:1] == '3':
+    import http.cookiejar
+elif sys.version[:1] == '2':
+    import urllib2
+    import cookielib
+else:
+    raise PlurklibError("Your python interpreter is too old. Please consider upgrading.")
+
+class PlurklibError(Exception):
+    
+    def __init__(self, value):
+        self.value = value
+        
+    def __str__(self):
+        return repr(self.value)
 
 class PlurkAPI:
 
@@ -47,6 +61,35 @@ class PlurkAPI:
             Successful return:
                 The parsed dict object is returned for further processing.
         """
+        if sys.version[:1] == '3':
+            return self._python3_call_api(apirequest, parameters, https)
+        elif sys.version[:1] == '2': 
+            return self._python2_call_api(apirequest, parameters, https)
+        else:
+            raise PlurklibError("Your python interpreter is too old. Please consider upgrading.")
+        
+    def _python2_call_api(self, apirequest, parameters, https=False):
+        parameters['api_key'] = self._api_key
+        post = urllib.urlencode(parameters)
+        if https:
+            request = urllib2.Request(url = 'https://www.plurk.com' + apirequest, data = post)
+        else:
+            request = urllib2.Request(url = 'http://www.plurk.com' + apirequest, data = post)
+        try:
+            response = urllib2.urlopen(request)
+        except urllib2.HTTPError as message:
+            if message.code == 400:
+                response = json.loads(message.fp.read().decode("utf-8"))
+            return response
+        if apirequest == '/API/Users/login':
+            cookies = cookielib.CookieJar()
+            opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookies))
+            urllib2.install_opener(opener)
+            cookies.extract_cookies(response, request)
+        result = json.loads(response.read().decode("utf-8"))
+        return result
+        
+    def _python3_call_api(self, apirequest, parameters, https=False):
         parameters['api_key'] = self._api_key
         post = urllib.parse.urlencode(parameters)
         if https:
