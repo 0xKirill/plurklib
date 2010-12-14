@@ -80,6 +80,8 @@ class PlurkAPI:
         except urllib2.HTTPError as message:
             if message.code == 400:
                 response = json.loads(message.fp.read().decode("utf-8"))
+            else:
+                response = 'HTTP Error ' + message.code
             return response
         if apirequest == '/API/Users/login':
             cookies = cookielib.CookieJar()
@@ -101,6 +103,8 @@ class PlurkAPI:
         except urllib.error.HTTPError as message:
             if message.code == 400:
                 response = json.loads(message.fp.read().decode("utf-8"))
+            else:
+                response = 'HTTP Error ' + message.code
             return response
         if apirequest == '/API/Users/login':
             cookies = http.cookiejar.CookieJar()
